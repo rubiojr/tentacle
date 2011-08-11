@@ -10,7 +10,7 @@ Jeweler::Tasks.new do |gem|
   gem.homepage = "http://github.com/rubiojr/tentacle"
   gem.license = "MIT"
   gem.summary = %Q{Digs YUM repositories to search for RPM packages}
-  gem.description = %Q{Digs yum repositories to search for RPM packages}
+  gem.description = %Q{Digs YUM repositories to search for RPM packages}
   gem.email = "rubiojr@frameos.org"
   gem.authors = ["Sergio Rubio"]
   # Include your dependencies below. Runtime dependencies are required when using your gem,
