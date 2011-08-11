@@ -74,6 +74,14 @@ class AvailableReposCommand < Clamp::Command
 
 end
 
+class VersionCommand < Clamp::Command
+
+  def execute
+    puts "Tentacle Version #{Tentacle::VERSION}"
+  end
+
+end
+
 class Driver < Clamp::Command
   option "--debug", :flag, "Print debug messages" do 
     YumRepo::Settings.instance.log_level = :debug
@@ -81,6 +89,7 @@ class Driver < Clamp::Command
   subcommand "validate", "Validate repository URLs", ValidateFeedsCommand
   subcommand "search", "Package search", SearchCommand
   subcommand "available-repos", "List available repos", AvailableReposCommand
+  subcommand "version", "Print Tentacle version", VersionCommand
 end
 
 Driver.run
