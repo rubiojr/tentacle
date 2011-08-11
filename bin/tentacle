@@ -61,7 +61,7 @@ class SearchCommand < Clamp::Command
       pl = YumRepo::PackageList.new fc.url
       pl.each do |p|
         full_name = "#{p.name}-#{p.version}-#{p.release}"
-        puts "  #{full_name} ".ljust(50) + "[#{fc.repo_id}]".yellow if "#{p.name}-#{p.version}-#{p.release}" =~ /#{pkg}/
+        puts "  #{full_name} ".ljust(50) + "[#{fc.repo_id}]".yellow if "#{p.name}-#{p.version}-#{p.release}" =~ /#{pkg}/i
       end
     end
   end
