@@ -44,7 +44,7 @@ class SearchCommand < Clamp::Command
   option "--distro-class", "CLASS", "Filter by distro class"
   option "--repo-id", "CLASS", "Filter by distro class"
   option "--source", :flag, "Search only SRPMS"
-  parameter "PKG", "Search for packages matching PKG", :attribute_name => :pkg
+  parameter "[PKG]", "Search for packages matching PKG", :attribute_name => :pkg, :default => '.*'
 
   def execute
     $stdout.sync = true

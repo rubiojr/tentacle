@@ -29,7 +29,7 @@ Command line YUM repository browser/agregattor.
 
     tentacle search ruby
 
-Searches for package names matching ruby. Regexp may be used.
+Searches for package names matching ruby. Regexp may be used. Package name search is case insensitive
 
 **Regexp search**
 
@@ -55,6 +55,12 @@ Search for ruby packages in RBEL 5 repository. The list of available repo-ids is
     tentacle search --source ruby-1.9
 
 Search for Source RPMS matching ruby-1.9
+
+**List repo packages**
+
+    tentacle search --repo-id rbel5-src
+
+Omitting the package name, tentacle lists all the packages in the rbel5-src repository
 
 # Copyright
 
