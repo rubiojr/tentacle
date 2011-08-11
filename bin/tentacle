@@ -1,0 +1,86 @@
+#!/usr/bin/env ruby
+require 'rubygems'
+require 'rest-client'
+require 'git'
+require 'yumrepo'
+require 'clamp'
+require 'colorize'
+require 'tentacle'
+
+include Tentacle
+
+TEMP_DIR = "/tmp/metarpm-#{Time.now.to_i}"
+$stdout.sync = true
+YumRepo::Settings.instance.cache_path = File.join(ENV['HOME'], ".tentacle/cache")
+YumRepo::Settings.instance.log_level = :info
+
+class ValidateFeedsCommand < Clamp::Command
+
+  def execute
+    Git.clone "git://gist.github.com/1139245.git", TEMP_DIR 
+
+    urls = []
+    File.readlines(File.join(TEMP_DIR, "repo_feeds.txt")).each do |line|
+      next if (line.strip.chomp.empty? or line =~ /^\s*#/)
+      urls << line
+    end
+    urls.sort! { |a,b| a.split(',')[1] <=> b.split(',')[1] }
+
+    urls.each do |u|
+      f = RepoFeed.new(u)
+      print "Validating #{f.repo_id}... ".ljust(40)
+      if not validate_url(f.url)
+        puts "FAILED".red
+      else
+        puts "OK".green
+      end
+    end
+  end
+
+end
+
+class SearchCommand < Clamp::Command
+
+  option "--distro-class", "CLASS", "Filter by distro class"
+  option "--repo-id", "CLASS", "Filter by distro class"
+  parameter "PKG", "Search for packages matching PKG", :attribute_name => :pkg
+
+  def execute
+    $stdout.sync = true
+    puts "Searching packages matching #{pkg.dup.magenta}..."
+    FeedCollection.all.each do |fc|
+      if repo_id and fc.repo_id != repo_id
+        next
+      end
+      if distro_class and fc.distro_class != distro_class
+        next
+      end
+      pl = YumRepo::PackageList.new fc.url
+      pl.each do |p|
+        full_name = "#{p.name}-#{p.version}-#{p.release}"
+        puts "  #{full_name} ".ljust(50) + "[#{fc.repo_id}]".yellow if "#{p.name}-#{p.version}-#{p.release}" =~ /#{pkg}/
+      end
+    end
+  end
+end
+
+class AvailableReposCommand < Clamp::Command
+
+  def execute
+    FeedCollection.all.each do |feed|
+      puts feed.repo_id
+    end
+  end
+
+end
+
+class Driver < Clamp::Command
+  option "--debug", :flag, "Print debug messages" do 
+    YumRepo::Settings.instance.log_level = :debug
+  end
+  subcommand "validate", "Validate repository URLs", ValidateFeedsCommand
+  subcommand "search", "Package search", SearchCommand
+  subcommand "available-repos", "List available repos", AvailableReposCommand
+end
+
+Driver.run
