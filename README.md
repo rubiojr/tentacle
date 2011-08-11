@@ -1,6 +1,12 @@
 # tentacle
 
-Description goes here.
+Command line YUM repository browser/agregattor.
+
+# Features
+
+* Digs YUM repositories to search for RPM packages
+* Multiple repositories supported
+* Most used Fedora/RHEL repositories included (Fedora, CentOS, EPEL, Fusion, Repoforge, PowerStack, RBEL, ...)
 
 # Installation
 
