@@ -52,7 +52,7 @@ class SearchCommand < Clamp::Command
     FeedCollection.all.each do |fc|
       next if source? and not fc.repo_id =~ /-src$/
 
-      if repo_id and fc.repo_id != repo_id
+      if repo_id and fc.repo_id !~ /#{repo_id}/i
         next
       end
       if distro_class and fc.distro_class != distro_class
