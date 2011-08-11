@@ -50,7 +50,12 @@ Search for ruby packages in RHEL5 compatible repositories
 
 Search for ruby packages in RBEL 5 repository. The list of available repo-ids is displayed with 'tentacle available-repos'
 
-  
+**Search only SRPMS**
+    
+    tentacle search --source ruby-1.9
+
+Search for Source RPMS matching ruby-1.9
+
 # Copyright
 
 Copyright (c) 2011 Sergio Rubio. See LICENSE.txt for

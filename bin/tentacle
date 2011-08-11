@@ -43,12 +43,15 @@ class SearchCommand < Clamp::Command
 
   option "--distro-class", "CLASS", "Filter by distro class"
   option "--repo-id", "CLASS", "Filter by distro class"
+  option "--source", :flag, "Search only SRPMS"
   parameter "PKG", "Search for packages matching PKG", :attribute_name => :pkg
 
   def execute
     $stdout.sync = true
     puts "Searching packages matching #{pkg.dup.magenta}..."
     FeedCollection.all.each do |fc|
+      next if source? and not fc.repo_id =~ /-src$/
+
       if repo_id and fc.repo_id != repo_id
         next
       end
